@@ -1,0 +1,9 @@
+extends layout
+
+block content
+    h1 #{title}
+    form(method='POST', action='/gates/add/'+gate._id)
+        #form-group
+            label Gate Name:
+            input.form-control(name='name', type='text', value=gate.name)
+        input.btn.btn-primary(type='submit', value='Submit')
