@@ -2,10 +2,13 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const config = require('./config/database');
+const expressValidator = require('express-validator');
+const flash = require('connect-flash');
+const session = require('express-session');
 const createError = require('http-errors');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const config = require('./config/database');
 
 mongoose.connect(config.database);
 let db = mongoose.connection;
@@ -31,18 +34,51 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // Body Parser Middleware
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+// app.use(logger('dev'));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+// app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
-// // parse application/x-www-form-urlencoded
-// app.use(bodyParser.urlencoded({ extended: false }));
-// // parse application/json
-// app.use(bodyParser.json());
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
 
 // Set Public Folder
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Express Session Middleware
+app.use(session({
+    secret: 'keyboard cat',
+    resave: true,
+    saveUninitialized: true
+}));
+
+// Express Messages Middleware
+app.use(require('connect-flash')());
+app.use(function (req, res, next) {
+    res.locals.messages = require('express-messages')(req, res);
+    next();
+});
+
+// Express Validator Middleware
+app.use(expressValidator({
+    errorFormatter: function(param, msg, value) {
+            var namespace = param.split('.')
+            , root    = namespace.shift()
+            , formParam = root;
+    
+        while(namespace.length) {
+            formParam += '[' + namespace.shift() + ']';
+        }
+        return {
+            param : formParam,
+            msg   : msg,
+            value : value
+        };
+    }
+}));
 
 // Home Route
 app.get('/', function(req, res){
@@ -58,52 +94,11 @@ app.get('/', function(req, res){
     }); 
 });
 
-// Get Single Gate
-app.get('/gate/:id', function(req, res){
-    Gate.findById(req.params.id, function(err, gate){
-        // console.log(gate);
-        // return;
-        res.render('gate', {
-            gate:gate
-        });
-    });
-});
-
-// Add Route
-app.get('/gates/add', function(req, res){
-    res.render('add_gate', {
-        title: 'Add Gates'
-    });
-});
-
-// Add Submit POST Route
-app.post('/gates/add', function(req, res){
-    // console.log('Submitted');
-    // return;
-    let gate = new Gate();
-    gate.name = req.body.name;
-
-    gate.save(function(err){
-        if(err){
-            console.log(err);
-            return;
-        }else{
-            res.redirect('/');
-        }
-    });
-});
-
-// Get Single Gate
-app.get('/gate/edit/:id', function(req, res){
-    Gate.findById(req.params.id, function(err, gate){
-        // console.log(gate);
-        // return;
-        res.render('edit_gate', {
-            title: 'Edit Gate',
-            gate:gate
-        });
-    });
-});
+// Route Files
+let gates = require('./routes/gates');
+let users = require('./routes/users');
+app.use('/gates', gates);
+app.use('/users', users);
 
 // var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');

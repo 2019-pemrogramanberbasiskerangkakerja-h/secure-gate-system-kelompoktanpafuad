@@ -19,6 +19,9 @@ html
                             a.nav-link(href='/gates/add') Add Gate
 
         .contaioner
+            != messages('message', locals)
+            if errors
+                div(class="alert alert-danger") #{error.msg}
             block content
             br
             hr
@@ -27,3 +30,4 @@ html
 
         script(src="/bower_components/jquery/dist/js/jquery.js")
         script(src="/bower_components/bootstrap/dist/js/bootstrap.js")
+        script(src="/js/main.js")
