@@ -1,1 +1,0 @@
-# secure-gate-system-kelompoktanpafuad
