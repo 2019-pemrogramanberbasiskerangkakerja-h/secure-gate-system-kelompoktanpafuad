@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
 
 // Bring in User Model
 let User = require('../models/user');
 
 // Register Form
 router.get('/register', function(req, res){
-  res.render('register',{
+  res.render('register', {
     title: 'Register User'
   });
 });
@@ -59,6 +60,11 @@ router.post('/register', function(req, res){
   }
 });
 
+router.get('/login', function(req, res){
+  res.render('login', {
+    title: 'Login User'
+  });
+});
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
