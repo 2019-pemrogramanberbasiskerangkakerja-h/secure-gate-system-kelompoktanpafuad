@@ -2,3 +2,7 @@ extends layout
 
 block content
     h1 #{title}
+    ul.list-group
+        each gate, i in gates
+            li.list-group-item
+                a(href="/gate/"+gate._id)= gate.name

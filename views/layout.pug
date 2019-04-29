@@ -2,9 +2,28 @@ doctype html
 html
     head
         title SGS
+        link(rel="stylesheet", href="/bower_components/bootstrap/dist/css/bootstrap.css")
     body
-        block content
-        br
-        hr
-        footer
-            p Copyright &copy; 2019
+        nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.static-top
+            .container
+                a.navbar-brand(href='/') Secure Gate System
+                    //img(src='http://placehold.it/150x50?text=Logo', alt='')
+                //button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
+                    //span.navbar-toggler-icon
+                #navbarResponsive.collapse.navbar-collapse
+                    ul.navbar-nav.ml-auto
+                        li.nav-item.active
+                            a.nav-link(href='/') Home
+                                span.sr-only (current)
+                        li.nav-item
+                            a.nav-link(href='/gates/add') Add Gate
+
+        .contaioner
+            block content
+            br
+            hr
+            footer
+                p Copyright &copy; Kelompok Tanpa Fuad 2019
+
+        script(src="/bower_components/jquery/dist/js/jquery.js")
+        script(src="/bower_components/bootstrap/dist/js/bootstrap.js")
