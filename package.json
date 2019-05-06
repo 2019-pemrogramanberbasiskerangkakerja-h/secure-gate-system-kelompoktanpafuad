@@ -1,38 +1,21 @@
 {
-  "name": "secure-gate-system-kelompoktanpafuad",
+  "name": "webs",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
-    "connect-flash": "^0.1.1",
+    "bcrypt": "^3.0.6",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
-    "express": "^4.16.4",
-    "express-messages": "^1.0.1",
+    "express": "~4.16.0",
     "express-session": "^1.16.1",
-    "express-validator": "^5.3.1",
     "http-errors": "~1.6.2",
-    "iconv-lite": "^0.4.24",
-    "mongoose": "^5.5.4",
+    "jade": "~1.11.0",
     "morgan": "~1.9.0",
-    "passport": "^0.4.0",
-    "passport-local": "^1.0.0",
-    "pug": "^2.0.3",
-    "raw-body": "^2.4.0"
-  },
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/2019-pemrogramanberbasiskerangkakerja-h/secure-gate-system-kelompoktanpafuad.git"
-  },
-  "author": "kelompok tanpa fuad",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/2019-pemrogramanberbasiskerangkakerja-h/secure-gate-system-kelompoktanpafuad/issues"
-  },
-  "homepage": "https://github.com/2019-pemrogramanberbasiskerangkakerja-h/secure-gate-system-kelompoktanpafuad#readme"
+    "mysql": "^2.17.1",
+    "mysql-model": "0.0.3",
+    "nunjucks": "^3.2.0"
+  }
 }

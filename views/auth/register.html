@@ -1,0 +1,83 @@
+{% extends "layouts/auth/app.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<!-- Page Content -->
+<div class="bg-image" style="background-image: url('codebase/src/assets/media/photos/photo34@2x.jpg');">
+    <div class="row mx-0 bg-black-op">
+        <div class="hero-static col-md-6 col-xl-8 d-none d-md-flex align-items-md-end">
+            <div class="p-30 invisible" data-toggle="appear">
+                <p class="font-size-h3 font-w600 text-white">
+                    SYalalalalalalalalalalalalalalalal alalalala lalalala pooooooooooooooooooooooooooooooooo
+                </p>
+                <p class="font-italic text-white-op">
+                    Copyright &copy; WebTA <span class="js-year-copy"></span>
+                </p>
+            </div>
+        </div>
+        <div class="hero-static col-md-6 col-xl-4 d-flex align-items-center bg-white invisible" data-toggle="appear" data-class="animated fadeInRight">
+            <div class="content content-full">
+                <div class="px-30 py-10 text-center">
+                    {# <img src="" alt="Logo Sidoarjo" width="50%" height="100%"><br> #}
+                    <a class="link-effect font-w700" href="index.html">
+                        <span class="font-size-xl text-primary-dark">Web</span> <span class="font-size-xl">TA</span>
+                    </a>
+                </div>
+                <!-- Header -->
+                <div class="px-30 py-10">
+                    <h1 class="h3 font-w700 mt-30 mb-10">Create New Account</h1>
+                    <h2 class="h5 font-w400 text-muted mb-0">Please add your details</h2>
+                </div>
+                <!-- END Header -->
+
+                <!-- Sign In Form -->
+                <!-- jQuery Validation functionality is initialized with .js-validation-signin class in js/pages/op_auth_signin.min.js which was auto compiled from _es6/pages/op_auth_signin.js -->
+                <!-- For more examples you can check out https://github.com/jzaefferer/jquery-validation -->
+                <form id="register-form" class="js-validation-signin px-30" action="/register" method="post">
+                    <h2 class="h5 font-w400 text-danger mb-0">{{ message }}</h2>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <div class="form-material form-material-primary floating">
+                                <input type="text" class="form-control" id="loginUsername" name="username">
+                                <label for="loginUsername">Username</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <div class="form-material form-material-primary floating">
+                                <input type="password" class="form-control" id="loginPassword" name="password">
+                                <label for="loginPassword">Password</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                        <div class="col-12">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="login-remember-me" name="login-remember-me">
+                                <label class="custom-control-label" for="login-remember-me">Remember Me</label>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-sm btn-hero btn-alt-success">
+                            <i class="fa fa-plus mr-10"></i> Create Account
+                        </button>
+                        <div class="mt-30">
+                            {# <a class="link-effect text-muted mr-10 mb-5 d-inline-block" href="#" data-toggle="modal" data-target="#modal-terms">
+                                <i class="fa fa-book text-muted mr-5"></i> Read Terms
+                            </a> #}
+                            <a class="link-effect text-muted mr-10 mb-5 d-inline-block" href="/">
+                                <i class="fa fa-user text-muted mr-5"></i> Sign In
+                            </a>
+                        </div>
+                    </div>
+                </form>
+                <!-- END Sign In Form -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Page Content -->
+{% endblock %}
