@@ -140,15 +140,7 @@ exports.register = function(req, res, next) {
 exports.logout = function(req, res){
     var user_id = req.session.user_id;
     var gate_id = req.session.gate_id;
-    db.query('INSERT INTO logs (description, gate_id, user_id) VALUES (?, ?, ?)', [ "User Logout!", gate_id, user_id ], 
-    function (error, result, fields){
-        if(error){
-            console.log(error)
-        } else{
-            req.session.destroy(function(){
-                console.log("user logged out.")
-            });
-            res.redirect('/login');            
-        }
-    });
+    var status = "Logged Out!"
+    insertLog(status, gate_id, user_id);
+    response.ok(status,res);
 };
