@@ -41,7 +41,7 @@
                     <div class="form-group row">
                         <div class="col-12">
                             <div class="form-material form-material-primary floating">
-                                <input type="text" class="form-control" id="loginUsername" name="username">
+                                <input type="text" class="form-control" id="loginUsername" name="nrp">
                                 <label for="loginUsername">Username</label>
                             </div>
                         </div>
@@ -54,6 +54,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <div class="form-material form-material-primary">
+                                <select class="form-control" id="material-select" name="gates">
+                                    {% for rule in rules %}
+                                    <option value="{{ rule.gate_id }}">{{ rule.gate_name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="material-select">Select Gate</label>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <!-- <div class="form-group row">
                         <div class="col-12">
                             <div class="custom-control custom-checkbox">

@@ -7,6 +7,7 @@ CREATE TABLE `users` (
 
 CREATE TABLE `rules` (
 	`rule_id` INT NOT NULL AUTO_INCREMENT,
+	`rule_name` varchar(100) DEFAULT NULL,
 	`start` TIME NOT NULL,
 	`finish` TIME NOT NULL,
 	`user_id` INT NOT NULL,

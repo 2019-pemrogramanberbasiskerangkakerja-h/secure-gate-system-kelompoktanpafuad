@@ -27,12 +27,30 @@ var OpAuthSignIn = function() {
                     required: true,
                     minlength: 3,
                 },
+                'nrp': {
+                    required: true,
+                },
+                'password': {
+                    required: true,
+                },
+                'gates': {
+                    required: true,
+                },
                 'loginPassword': {
                     required: true,
                     minlength: 5,
                 }
             },
             messages: {
+                'nrp': {
+                    required: "Masukkan NRP",
+                },
+                'password': {
+                    required: "Masukkan Password",
+                },
+                'gates': {
+                    required: "Pilih Gate",
+                },
                 'loginUsername': {
                     required: 'Masukkan Username',
                     minlength: 'Username Minimal 3 Karakter',

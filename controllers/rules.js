@@ -16,12 +16,13 @@ exports.getAllRule = function(req, res) {
 };
 
 exports.postRule = function(req, res) {
+    var rule_name = req.body.rule_name;
     var start = req.body.start;
     var finish = req.body.finish;
     var gate_id = req.body.gate_id;
     var user_id = req.body.user_id;
-    db.query('INSERT INTO rules (start, finish, gate_id, user_id) VALUES (?, ?, ?, ?)',
-    [ start, finish, gate_id, user_id ], 
+    db.query('INSERT INTO rules (start, finish, gate_id, user_id) VALUES (?, ?, ?, ?, ?)',
+    [ rule_name, start, finish, gate_id, user_id ], 
     function (error, rows, fields){
         if(error){
             console.log(error)
@@ -45,13 +46,14 @@ exports.findRule = function(req, res) {
 
 exports.updateRule = function(req, res) {
     var rule_id = req.params.rule_id;
+    var rule_name = req.body.rule_name;
     var start = req.body.start;
     var finish = req.body.finish;
     var gate_id = req.body.gate_id;
     var user_id = req.body.user_id;
 
-    db.query('UPDATE rules SET start = ?, finish = ?, gate_id = ?, user_id = ? WHERE rule_id = ?', 
-    [ start, finish, gate_id, user_id, rule_id ], 
+    db.query('UPDATE rules SET rule_name = ?, start = ?, finish = ?, gate_id = ?, user_id = ? WHERE rule_id = ?', 
+    [ rule_name, start, finish, gate_id, user_id, rule_id ], 
     function (error, rows, fields){
         if(error){
             console.log(error)

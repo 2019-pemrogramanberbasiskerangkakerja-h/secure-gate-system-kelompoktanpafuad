@@ -1,10 +1,11 @@
 var db = require('../config/databases');
+const moment = require('moment');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 // var Users = [];
 
 exports.index = function(req, res, next) {
-    res.render('dashboard/index');
+    res.render('dashboard/index', { path: "/"});
 };
 
 // page user
@@ -36,13 +37,21 @@ exports.editRole = function(req, res, next) {
 
 // page login
 exports.loginPage = function(req, res, next) {
-    res.render('auth/login');
+    db.query('SELECT * FROM gates', function(error, result, fields) {
+        // console.log(result[0]);
+        if(error) {
+            console.log(error);
+        } else {
+            res.render('auth/login', { rules : result });
+        }
+    });
 };
 
 exports.login = function(req, res, next) {
     var nrp = req.body.nrp;
     var password = req.body.password;
-    if(!nrp || !password){
+    var gate_id = req.body.gates;
+    if(!nrp || !password || !gate_id){
         res.render('auth/login', { message: "Please Enter NRP and Password" });
     } else {
         db.query('SELECT * FROM users WHERE nrp = ?', [nrp], function(error, result, fields) {
@@ -51,25 +60,121 @@ exports.login = function(req, res, next) {
                 var hash = result[0].password;
                 var pass = bcrypt.compareSync(password, hash);
                 if(pass) {
-                    // db.query('INSERT INTO logs (description, gate_id, user_id) VALUES (?, ?, ?)',
-                    // [ description, gate_id, user_id ], 
-                    // function (error, rows, fields){
-                    //     if(error){
-                    //         console.log(error)
-                    //     } else{
-                    //         response.ok("Create Gate Success!", res)
-                    //     }
-                    // });
-                    req.session.loggedin = true;
-                    req.session.nrp = nrp;
-                    res.redirect('/');
+                    db.query('INSERT INTO logs (description, gate_id, user_id) VALUES (?, ?, ?)',
+                    [ "Trying to login", gate_id, user_id ], 
+                    function (error, result, fields){
+                        if(error){
+                            console.log(error)
+                        } else{
+                            db.query('SELECT * FROM rules where user_id = ? and gate_id = ?', [ user_id, gate_id ], 
+                            function (error, result, fields){
+                                if(error){
+                                    console.log(error)
+                                }
+                                if(result.length == 0) {
+                                    db.query('INSERT INTO logs (description, gate_id, user_id) VALUES (?, ?, ?)',
+                                    [ "Dont Have Access on This Gate!", gate_id, user_id ], 
+                                    function (error, result, fields){
+                                        if(error){
+                                            console.log(error)
+                                        } else{
+                                            db.query('SELECT * FROM gates', function(error, result, fields) {
+                                                // console.log(result[0]);
+                                                if(error) {
+                                                    console.log(error);
+                                                } else {
+                                                    res.render('auth/login', { message: "Dont Have Access on This Gate!", rules : result });
+                                                }
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    // console.log('masuk');
+                                    db.query('SELECT * FROM rules where user_id = ? and gate_id = ?', [ user_id, gate_id ],
+                                    function (error, result, fields){
+                                        // console.log('masuk gan');
+                                        if(error){
+                                            console.log(error)
+                                        }
+                                        if(result.length == 1) {
+                                            // console.log('masuk result');
+                                            var start = result[0].start;
+                                            var finish = result[0].finish;
+                                            var today = new Date();
+                                            var timeToday = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
+                                            if(moment.duration(start) < moment.duration(timeToday) &&  moment.duration(finish) > moment.duration(timeToday)){
+                                                db.query('INSERT INTO logs (description, gate_id, user_id) VALUES (?, ?, ?)',
+                                                [ "Login Success!", gate_id, user_id ], 
+                                                function (error, result, fields){
+                                                    if(error){
+                                                        console.log(error)
+                                                    } else{
+                                                        req.session.loggedin = true;
+                                                        req.session.nrp = nrp;
+                                                        req.session.user_id = user_id;
+                                                        req.session.gate_id = gate_id;
+                                                        res.redirect('/');
+                                                    }
+                                                });
+                                            } else {
+                                                db.query('INSERT INTO logs (description, gate_id, user_id) VALUES (?, ?, ?)',
+                                                [ "Gate Closed!", gate_id, user_id ], 
+                                                function (error, result, fields){
+                                                    if(error){
+                                                        console.log(error)
+                                                    } else{
+                                                        db.query('SELECT * FROM gates', function(error, result, fields) {
+                                                            // console.log(result[0]);
+                                                            if(error) {
+                                                                console.log(error);
+                                                            } else {
+                                                                res.render('auth/login', { message : "Gate Closed!", rules : result });
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                            
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
                 } else {
-                    res.render('auth/login', { message: "NRP or Password Incorrect" });
+                    db.query('SELECT * FROM gates', function(error, result, fields) {
+                        // console.log(result[0]);
+                        if(error) {
+                            console.log(error);
+                        } else {
+                            db.query('INSERT INTO logs (description, gate_id, user_id) VALUES (?, ?, ?)', [ "Password Salah!", gate_id, user_id ], 
+                            function (error, rows, fields){
+                                if(error){
+                                    console.log(error)
+                                } else{
+                                    res.render('auth/login', { message: "NRP or Password Incorrect!", rules : result });     
+                                }
+                            });
+                        }
+                    });
                 }
                 
             } else {
-                req.session.error = "invalid credentials !";
-                res.render('auth/login', { message: "NRP or Password Incorrect" });
+                db.query('SELECT * FROM gates', function(error, result, fields) {
+                    // console.log(result[0]);
+                    if(error) {
+                        console.log(error);
+                    } else {
+                        db.query('INSERT INTO logs (description, gate_id, user_id) VALUES (?, ?, ?)', [ "Login Gagal!", gate_id, user_id ], 
+                        function (error, result, fields){
+                            if(error){
+                                console.log(error)
+                            } else{
+                                res.render('auth/login', { message: "NRP or Password Incorrect!", rules : result });     
+                            }
+                        });
+                    }
+                });
             }
         });
     }
@@ -103,8 +208,17 @@ exports.register = function(req, res, next) {
 
 // logout
 exports.logout = function(req, res){
-    req.session.destroy(function(){
-        console.log("user logged out.")
+    var user_id = req.session.user_id;
+    var gate_id = req.session.gate_id;
+    db.query('INSERT INTO logs (description, gate_id, user_id) VALUES (?, ?, ?)', [ "User Logout!", gate_id, user_id ], 
+    function (error, result, fields){
+        if(error){
+            console.log(error)
+        } else{
+            req.session.destroy(function(){
+                console.log("user logged out.")
+            });
+            res.redirect('/login');            
+        }
     });
-    res.redirect('/login');
 };
