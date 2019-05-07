@@ -60,81 +60,61 @@ exports.login = function(req, res, next) {
                 var hash = result[0].password;
                 var pass = bcrypt.compareSync(password, hash);
                 if(pass) {
-                    db.query('INSERT INTO logs (description, gate_id, user_id) VALUES (?, ?, ?)',
-                    [ "Trying to login", gate_id, user_id ], 
+                    db.query('SELECT * FROM rules where user_id = ? and gate_id = ?', [ user_id, gate_id ],
                     function (error, result, fields){
                         if(error){
                             console.log(error)
-                        } else{
-                            db.query('SELECT * FROM rules where user_id = ? and gate_id = ?', [ user_id, gate_id ], 
-                            function (error, result, fields){
-                                if(error){
-                                    console.log(error)
-                                }
-                                if(result.length == 0) {
-                                    db.query('INSERT INTO logs (description, gate_id, user_id) VALUES (?, ?, ?)',
-                                    [ "Dont Have Access on This Gate!", gate_id, user_id ], 
-                                    function (error, result, fields){
+                        }
+                        if(result.length == 1) {
+                            // console.log('masuk result');
+                            var start = result[0].start;
+                            var finish = result[0].finish;
+                            var today = new Date();
+                            var timeToday = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
+                            if(moment.duration(start) < moment.duration(timeToday) &&  moment.duration(finish) > moment.duration(timeToday)){
+                                db.query('INSERT INTO logs (description, gate_id, user_id) VALUES (?, ?, ?)',
+                                [ "Login Success!", gate_id, user_id ], 
+                                function (error, result, fields){
+                                    if(error){
+                                        console.log(error)
+                                    } else{
+                                        req.session.loggedin = true;
+                                        req.session.nrp = nrp;
+                                        req.session.user_id = user_id;
+                                        req.session.gate_id = gate_id;
+                                        res.redirect('/');
+                                    }
+                                });
+                            } else {
+                                db.query('INSERT INTO logs (description, gate_id, user_id) VALUES (?, ?, ?)',
+                                [ "Gate Closed!", gate_id, user_id ], 
+                                function (error, result, fields){
+                                    if(error){
+                                        console.log(error)
+                                    } else{
+                                        db.query('SELECT * FROM gates', function(error, result, fields) {
+                                            if(error) {
+                                                console.log(error);
+                                            } else {
+                                                res.render('auth/login', { message : "Gate Closed!", rules : result });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                            
+                        } else {
+                            db.query('SELECT * FROM gates', function(error, result, fields) {
+                                // console.log(result[0]);
+                                if(error) {
+                                    console.log(error);
+                                } else {
+                                    db.query('INSERT INTO logs (description, gate_id, user_id) VALUES (?, ?, ?)', [ "Dont Have Access!", gate_id, user_id ], 
+                                    function (error, rows, fields){
                                         if(error){
                                             console.log(error)
                                         } else{
-                                            db.query('SELECT * FROM gates', function(error, result, fields) {
-                                                // console.log(result[0]);
-                                                if(error) {
-                                                    console.log(error);
-                                                } else {
-                                                    res.render('auth/login', { message: "Dont Have Access on This Gate!", rules : result });
-                                                }
-                                            });
-                                        }
-                                    });
-                                } else {
-                                    // console.log('masuk');
-                                    db.query('SELECT * FROM rules where user_id = ? and gate_id = ?', [ user_id, gate_id ],
-                                    function (error, result, fields){
-                                        // console.log('masuk gan');
-                                        if(error){
-                                            console.log(error)
-                                        }
-                                        if(result.length == 1) {
-                                            // console.log('masuk result');
-                                            var start = result[0].start;
-                                            var finish = result[0].finish;
-                                            var today = new Date();
-                                            var timeToday = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
-                                            if(moment.duration(start) < moment.duration(timeToday) &&  moment.duration(finish) > moment.duration(timeToday)){
-                                                db.query('INSERT INTO logs (description, gate_id, user_id) VALUES (?, ?, ?)',
-                                                [ "Login Success!", gate_id, user_id ], 
-                                                function (error, result, fields){
-                                                    if(error){
-                                                        console.log(error)
-                                                    } else{
-                                                        req.session.loggedin = true;
-                                                        req.session.nrp = nrp;
-                                                        req.session.user_id = user_id;
-                                                        req.session.gate_id = gate_id;
-                                                        res.redirect('/');
-                                                    }
-                                                });
-                                            } else {
-                                                db.query('INSERT INTO logs (description, gate_id, user_id) VALUES (?, ?, ?)',
-                                                [ "Gate Closed!", gate_id, user_id ], 
-                                                function (error, result, fields){
-                                                    if(error){
-                                                        console.log(error)
-                                                    } else{
-                                                        db.query('SELECT * FROM gates', function(error, result, fields) {
-                                                            // console.log(result[0]);
-                                                            if(error) {
-                                                                console.log(error);
-                                                            } else {
-                                                                res.render('auth/login', { message : "Gate Closed!", rules : result });
-                                                            }
-                                                        });
-                                                    }
-                                                });
-                                            }
-                                            
+                                            res.render('auth/login', { message: "Dont Have Access!", rules : result });     
                                         }
                                     });
                                 }
@@ -158,19 +138,18 @@ exports.login = function(req, res, next) {
                         }
                     });
                 }
-                
             } else {
                 db.query('SELECT * FROM gates', function(error, result, fields) {
                     // console.log(result[0]);
                     if(error) {
                         console.log(error);
                     } else {
-                        db.query('INSERT INTO logs (description, gate_id, user_id) VALUES (?, ?, ?)', [ "Login Gagal!", gate_id, user_id ], 
-                        function (error, result, fields){
+                        db.query('INSERT INTO logs (description, gate_id, user_id) VALUES (?, ?, ?)', [ "User Not Found!", gate_id, user_id ], 
+                        function (error, rows, fields){
                             if(error){
                                 console.log(error)
                             } else{
-                                res.render('auth/login', { message: "NRP or Password Incorrect!", rules : result });     
+                                res.render('auth/login', { message: "User Not Found!", rules : result });     
                             }
                         });
                     }
