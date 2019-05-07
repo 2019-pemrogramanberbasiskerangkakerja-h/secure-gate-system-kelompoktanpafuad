@@ -16,3 +16,11 @@ exports.error = function(values, res) {
   res.json(data);
   res.end();
 };
+
+exports.errorr = function(values, res) {
+  var data = {
+      'status': '400',
+  };
+  res.json(data);
+  res.end();
+};
