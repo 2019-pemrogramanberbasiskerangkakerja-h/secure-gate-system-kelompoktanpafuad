@@ -1,5 +1,12 @@
 ## SECURE GATE SYSTEM (RESTFUL API EXPRESS JS)
 
+## Anggota
+| No | Nama | NRP |
+| --- | --- | --- |
+| 1. | CAHYA PUTRA HIKMAWAN | 05111540000119 |
+| 2. | ILHAM M. MISBAHUDDIN | 05111540000088 |
+| 3. | ROHANA QUDUS | 05111540000045 |
+
 ### Test
 - Use POSTMAN
 - Use Curl
