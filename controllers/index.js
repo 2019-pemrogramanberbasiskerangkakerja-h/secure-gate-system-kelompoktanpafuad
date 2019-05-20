@@ -10,13 +10,60 @@ exports.index = function(req, res, next) {
     res.render('dashboard/index', { path: "/"});
 };
 
-// page user
-exports.addUser = function(req, res, next) {
-    res.render('dashboard/users/index');
+// GET All User [SUDAH]
+exports.indexUser = function(req, res, next) {
+    Request.get("http://10.151.31.98:3000/users", (error, response, body) => {
+        if(error) {
+            return console.log(error);
+        }
+        var data = JSON.parse(body);
+        res.render('dashboard/users/index', { users: data['values'], path: "/indexuser"} );
+    });
 };
 
-exports.editUser = function(req, res, next) {
-    res.render('dashboard/users/edit');
+// GET Add User [SUDAH]
+exports.addUser = function(req, res, next) {
+    res.render('dashboard/users/add');
+};
+
+// POST Add User [SUDAH]
+exports.postUser = function(req, res, next) {
+    var user_nrp = req.body.user_nrp;
+    var user_password = req.body.user_password;
+    // var user_role = req.body.user_role;
+    Request.post("http://10.151.31.98:3000/users/", {
+        form:{ username:user_nrp, password:user_password }
+    }, (error, data) => {
+        if(error) {
+            return console.dir(error);
+        }
+            console.log(data);
+            res.redirect('/indexuser');
+    });
+};
+
+// GET Info User [SUDAH]
+exports.getUser = function(req, res, next) {
+    var user_nrp = req.params.user_nrp;
+    Request.get("http://10.151.31.98:3000/users/"+user_nrp, (error, response, body) => {
+        if(error) {
+            return console.log(error);
+        }
+        var data = JSON.parse(body);
+        console.log(data['values'][0]);
+        res.render('dashboard/users/detail', { user: data['values'][0], path: "/indexuser"} );
+    });
+};
+
+// DELETE User [SUDAH]
+exports.delUser = function(req, res, next) {
+    var user_nrp = req.params.user_nrp;
+    Request.delete("http://10.151.31.98:3000/users/"+user_nrp, (error, response, body) => {
+        if(error) {
+            return console.log(error);
+        }
+        res.redirect('/indexuser');
+    });
 };
 
 // page gate
