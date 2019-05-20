@@ -1,6 +1,6 @@
 {% extends "layouts/dashboard/app.html" %}
 
-{% block title %}Edit{% endblock %}
+{% block title %}Detail{% endblock %}
 
 {% block header %}
     {% include "layouts/dashboard/header.html" %}
@@ -25,14 +25,14 @@
 {% endif %}
 <div class="block block-themed">
     <div class="block-header bg-gd-lake">
-        <h3 class="block-title">Gates</small></h3>
+        <h3 class="block-title">Detail Gate</small></h3>
     </div>
     <div class="block-content block-content-full">
-        <form class="js-validation-signin" action="/addgate" method="post">
+        <form class="js-validation-signin" action="" method="post">
             <div class="form-group row">
                 <div class="col-md-12">
                     <div class="form-material form-material-primary input-group">
-                        <input type="text" class="form-control" id="material-addon-text" name="gate_id" placeholder="Masukkan ID Gate">
+                        <input value="{{ gate.gate_id }}" disabled type="text" class="form-control" id="material-addon-text" name="gate_id" placeholder="Masukkan ID Gate">
                         <label for="material-addon-text">ID Gate</label>
                         <div class="input-group-append">
                             <span class="input-group-text"></span>
@@ -43,7 +43,7 @@
             <div class="form-group row">
                 <div class="col-md-12">
                     <div class="form-material form-material-primary input-group">
-                        <input type="text" class="form-control" id="material-addon-text" name="gate_start" placeholder="Masukkan Jam Buka">
+                        <input value="{{ gate.gate_start }}" disabled type="text" class="form-control" id="material-addon-text" name="gate_start" placeholder="Masukkan Jam Buka">
                         <label for="material-addon-text">Jam Buka</label>
                         <div class="input-group-append">
                             <span class="input-group-text"></span>
@@ -54,18 +54,12 @@
             <div class="form-group row">
                 <div class="col-md-12">
                     <div class="form-material form-material-primary input-group">
-                        <input type="text" class="form-control" id="material-addon-text" name="gate_end" placeholder="Masukkan Jam Tutup">
+                        <input value="{{ gate.gate_end }}" disabled type="text" class="form-control" id="material-addon-text" name="gate_end" placeholder="Masukkan Jam Tutup">
                         <label for="material-addon-text">Jam Tutup</label>
                         <div class="input-group-append">
                             <span class="input-group-text"></span>
                         </div>
                     </div>
-                </div>
-            </div>
-            <hr>
-            <div class="form-group row">
-                <div class="col-md-12">
-                    <button type="submit" class="btn btn-alt-primary pull-right">Submit</button>
                 </div>
             </div>
         </form>
