@@ -6,7 +6,9 @@ var index = require('../controllers/index');
 router.get('/', index.index); // page dashboard
 router.get('/indexuser', index.indexUser); // page user
 router.get('/adduser', index.addUser); // page tambah user
-router.get('/getuser/:user_id', index.getUser); // page get info user
+router.post('/adduser', index.postUser); // post tambah user
+router.get('/getuser/:user_nrp', index.getUser); // get info user
+router.get('/deluser/:user_nrp', index.delUser); // delete user by id
 
 router.get('/indexgate', index.indexGate); // halaman gate
 router.get('/addgate', index.addGate); // halaman tambah gate
