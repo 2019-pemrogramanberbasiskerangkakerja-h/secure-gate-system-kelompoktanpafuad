@@ -18,6 +18,10 @@ router.get('/delgate/:gate_id', index.delGate); // delete gate by id
 
 router.get('/loginuser', authMiddleware.loginHandle, index.getLogin); // page login
 router.post('/loginuser', index.postLogin);
+router.get('/indexgroup', index.indexGroup); // halaman group
+router.get('/addgroup', index.addGroup); // halaman group
+router.post('/addgroup', index.postGroup); // halaman group
+router.get('/delgroup/:user/:gate', index.delGroup);
 
 router.get('/login', authMiddleware.loginHandle, index.loginPage); // page login
 router.get('/register', authMiddleware.loginHandle, index.registerPage); // page register

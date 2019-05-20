@@ -1,0 +1,57 @@
+{% extends "layouts/dashboard/app.html" %}
+
+{% block title %}Detail{% endblock %}
+
+{% block header %}
+    {% include "layouts/dashboard/header.html" %}
+{% endblock %}
+
+{% block sidebar %}
+    {% include "layouts/dashboard/sidebar.html" %}
+{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb bg-white push">
+    <a class="breadcrumb-item" href="/">Dashboard</a>
+    <a class="breadcrumb-item" href="/indexgroup">Groups</a>
+    <span class="breadcrumb-item active">Detail</span>
+</nav>
+{% if (code != NULL) %}
+    {% if (code == 0) %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% else %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endif %}
+{% endif %}
+<div class="block block-themed">
+    <div class="block-header bg-gd-lake">
+        <h3 class="block-title">Detail Group</small></h3>
+    </div>
+    <div class="block-content block-content-full">
+        <form class="js-validation-signin" action="" method="post">
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <div class="form-material form-material-primary input-group">
+                        <input value="{{ group.user_nrp }}" disabled type="text" class="form-control" id="material-addon-text" name="group_id" placeholder="Masukkan ID Group">
+                        <label for="material-addon-text">ID Group</label>
+                        <div class="input-group-append">
+                            <span class="input-group-text"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <div class="form-material form-material-primary input-group">
+                        <input value="{{ group.gate_id }}" disabled type="text" class="form-control" id="material-addon-text" name="group_start" placeholder="Masukkan Jam Buka">
+                        <label for="material-addon-text">Jam Buka</label>
+                        <div class="input-group-append">
+                            <span class="input-group-text"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
