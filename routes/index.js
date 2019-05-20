@@ -3,13 +3,15 @@ var router = express.Router();
 var authMiddleware = require('../middlewares/auth.js')
 var index = require('../controllers/index');
 
-router.get('/', authMiddleware.checkSignIn, index.index); // page dashboard
-router.get('/addUser', authMiddleware.checkSignIn, index.addUser); // page tambah user
-router.get('/editUser', authMiddleware.checkSignIn, index.editUser); // page tambah user
-router.get('/addGate', authMiddleware.checkSignIn, index.addGate); // page tambah gate
-router.get('/editGate', authMiddleware.checkSignIn, index.editGate); // page tambah gate
-router.get('/addRole', authMiddleware.checkSignIn, index.addRole); // page tambah role
-router.get('/editRole', authMiddleware.checkSignIn, index.editRole); // page tambah role
+router.get('/', index.index); // page dashboard
+router.get('/adduser', index.addUser); // page tambah user
+router.get('/edituser', index.editUser); // page tambah user
+
+router.get('/indexgate', index.indexGate); // halaman gate
+router.get('/addgate', index.addGate); // halaman tambah gate
+router.post('/addgate', index.postGate); // post gate
+router.get('/getgate/:gate_id', index.getGate); // get gate by id
+router.get('/delgate/:gate_id', index.delGate); // delete gate by id
 
 router.get('/login', authMiddleware.loginHandle, index.loginPage); // page login
 router.get('/register', authMiddleware.loginHandle, index.registerPage); // page register

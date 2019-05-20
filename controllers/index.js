@@ -1,5 +1,6 @@
 var db = require('../config/databases');
 var response = require('./response');
+var Request = require("request");
 const moment = require('moment');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -19,21 +20,60 @@ exports.editUser = function(req, res, next) {
 };
 
 // page gate
+// sudah
+exports.indexGate = function(req, res, next) {
+    Request.get("http://10.151.31.98:3000/gate", (error, response, body) => {
+        if(error) {
+            return console.log(error);
+        }
+        var data = JSON.parse(body);
+        res.render('dashboard/gates/index', { gates: data['values']} );
+    });
+};
+
+// sudah
 exports.addGate = function(req, res, next) {
-    res.render('dashboard/gates/index');
+    res.render('dashboard/gates/add');
 };
 
-exports.editGate = function(req, res, next) {
-    res.render('dashboard/gates/edit');
+// sudah
+exports.postGate = function(req, res, next) {
+    var gate_id = req.body.gate_id;
+    var gate_start = req.body.gate_start;
+    var gate_end = req.body.gate_end;
+    Request.post("http://10.151.31.98:3000/gate/", {
+        form:{ idgate:gate_id, start:gate_start, end:gate_end }
+    }, (error, data) => {
+        if(error) {
+            return console.dir(error);
+        }
+            console.log(data);
+            res.redirect('/indexgate');
+    });
 };
 
-// page role
-exports.addRole = function(req, res, next) {
-    res.render('dashboard/roles/index');
+// api mbingungi su
+exports.getGate = function(req, res, next) {
+    var gate_id = req.params.gate_id;
+    Request.get("http://10.151.31.98:3000/gate/"+gate_id, (error, response, body) => {
+        if(error) {
+            return console.log(error);
+        }
+        var data = JSON.parse(body);
+        console.log(data['values']);
+        res.render('dashboard/gates/edit', { gates: data['values']} );
+    });
 };
 
-exports.editRole = function(req, res, next) {
-    res.render('dashboard/roles/edit');
+// api error bangsat
+exports.delGate = function(req, res, next) {
+    var gate_id = req.params.gate_id;
+    Request.delete("http://10.151.31.98:3000/gate/"+gate_id, (error, response, body) => {
+        if(error) {
+            return console.log(error);
+        }
+        res.redirect('/indexGate');
+    });
 };
 
 // page login

@@ -1,38 +1,74 @@
-{% extends 'layout.html' %}
+{% extends "layouts/dashboard/app.html" %}
+
+{% block title %}Gate{% endblock %}
+
+{% block header %}
+    {% include "layouts/dashboard/header.html" %}
+{% endblock %}
+
+{% block sidebar %}
+    {% include "layouts/dashboard/sidebar.html" %}
+{% endblock %}
 
 {% block content %}
-  <main role="main" class="container" style="padding-top: 90px;">
-      <div class="row" style="padding-bottom: 20px;">
-          <div class="col-12">
-              <div class="text-right">
-                  <a href="" class="btn btn-info">
-                      <i class="fa fa-plus mr-2 mb-10"></i> Add New Data
-                  </a>
-              </div>
-          </div>
-      </div>
-      <div class="table-responsive">
-          <table class="table" id="movieTable">
-              <thead>
-                  <tr>
-                      <th class="text-center align-middle">Gate Name</th>
-                      <th class="text-center align-middle">Action</th>
-                  </tr>
-              </thead>
-              <tbody>
-                <!-- {% for movie in movies %} -->
-                <tr>
-                  <td class="text-center"></td>
-                  <td class="text-center">
-                      <a href="" style="margin-bottom: 5px;" class="btn btn-info"><i class="fa fa-edit small"></i></a>
-                      <form method="post" action="">
-                          <button type="submit" class="btn btn-danger"><i class="fa fa-trash small"></i></button>
-                      </form>
-                  </td>
-                </tr>
-                <!-- {% endfor %} -->
-              </tbody>
-          </table>
-      </div>
-  </main>
+<nav class="breadcrumb bg-white push">
+    <a class="breadcrumb-item" href="/">Dashboard</a>
+    <a class="breadcrumb-item" href="/indexgate">Gates</a>
+    <span class="breadcrumb-item active">index</span>
+</nav>
+{% if (code != NULL) %}
+    {% if (code == 0) %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% else %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endif %}
+{% endif %}
+<div class="block block-themed">
+    <div class="block-header bg-gd-lake">
+        <h3 class="block-title">Gates</small></h3>
+    </div>
+    <div class="block-content block-content-full">
+        <a href="/addgate" class="btn btn-success mb-10"><i class="fa fa-plus"></i> Tambah Gate</a>
+        <div class="table-responsive">
+            <table id="tabel-gate" class="stripe table table-stripped">
+                <thead>
+                    <tr>
+                        <th class="text-center">Gate ID</th>
+                        <th class="text-center">Gate Start</th>
+                        <th class="text-center">Gate End</th>
+                        <th class="text-center">Lihat</th>
+                        <th class="text-center">Hapus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for gate in gates %}
+                    <tr>
+                        <td class="text-center">{{ gate.gate_id }}</td>
+                        <td class="text-center">{{ gate.gate_start }}</td>
+                        <td class="text-center">{{ gate.gate_end }}</td>
+                        <td class="text-center">
+                            <a href="/getgate/{{ gate.gate_id }}" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></a>
+                        </td>
+                        <td class="text-center">
+                            <a href="/delgate/{{ gate.gate_id }}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block moreJS %}
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#tabel-gate').DataTable({
+                "autoWidth": true,
+                "ordering": false,
+            });
+        });
+    </script>
 {% endblock %}
