@@ -47,13 +47,13 @@ exports.indexGate = function(req, res, next) {
             return console.log(error);
         }
         var data = JSON.parse(body);
-        res.render('dashboard/gates/index', { gates: data['values']} );
+        res.render('dashboard/gates/index', { gates: data['values'], path: "/indexgate"} );
     });
 };
 
 // sudah
 exports.addGate = function(req, res, next) {
-    res.render('dashboard/gates/add');
+    res.render('dashboard/gates/add', { path: "/indexgate" });
 };
 
 // sudah
@@ -72,7 +72,7 @@ exports.postGate = function(req, res, next) {
     });
 };
 
-// api mbingungi su
+// sudah
 exports.getGate = function(req, res, next) {
     var gate_id = req.params.gate_id;
     Request.get("http://10.151.31.98:3000/gate/"+gate_id, (error, response, body) => {
@@ -80,12 +80,12 @@ exports.getGate = function(req, res, next) {
             return console.log(error);
         }
         var data = JSON.parse(body);
-        console.log(data['values']);
-        res.render('dashboard/gates/edit', { gates: data['values']} );
+        console.log(data['values'][0]);
+        res.render('dashboard/gates/detail', { gate: data['values'][0], path: "/indexgate" } );
     });
 };
 
-// api error bangsat
+// sudah
 exports.delGate = function(req, res, next) {
     var gate_id = req.params.gate_id;
     Request.delete("http://10.151.31.98:3000/gate/"+gate_id, (error, response, body) => {

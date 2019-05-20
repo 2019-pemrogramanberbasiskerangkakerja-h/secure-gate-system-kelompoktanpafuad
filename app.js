@@ -34,6 +34,7 @@ app.use(session({
   saveUninitialized: true
 }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/getgate', express.static(__dirname + '/public'));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
