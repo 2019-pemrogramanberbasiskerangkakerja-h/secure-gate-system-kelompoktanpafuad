@@ -123,6 +123,30 @@ exports.delGate = function(req, res, next) {
     });
 };
 
+exports.getLogin = function(req, res, next) {
+    Request.get("http://10.151.31.98:3000/gate", (error, response, body) => {
+        if(error) {
+            return console.log(error);
+        }
+        var data = JSON.parse(body);
+        res.render('auth/login', { rules : data['values'] } );
+    });
+};
+
+exports.postLogin = function(req, res, next) {
+    var user_nrp = req.body.user_nrp;
+    var user_password = req.body.user_password;
+    var gate_id = req.body.gate;
+    Request.post("http://10.151.31.98:3000/login/", {
+        form:{ username:user_nrp, password:user_password, gate:gate_id }
+    }, (error, data) => {
+        if(error) {
+            return console.dir(error);
+        }
+            console.log(data);
+            res.redirect('/');
+    });
+};
 // page login
 exports.loginPage = function(req, res, next) {
     db.query('SELECT * FROM gates', function(error, result, fields) {

@@ -16,6 +16,9 @@ router.post('/addgate', index.postGate); // post gate
 router.get('/getgate/:gate_id', index.getGate); // get gate by id
 router.get('/delgate/:gate_id', index.delGate); // delete gate by id
 
+router.get('/loginuser', authMiddleware.loginHandle, index.getLogin); // page login
+router.post('/loginuser', index.postLogin);
+
 router.get('/login', authMiddleware.loginHandle, index.loginPage); // page login
 router.get('/register', authMiddleware.loginHandle, index.registerPage); // page register
 

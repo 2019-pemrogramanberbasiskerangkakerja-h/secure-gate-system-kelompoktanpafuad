@@ -36,12 +36,12 @@
                 <!-- Sign In Form -->
                 <!-- jQuery Validation functionality is initialized with .js-validation-signin class in js/pages/op_auth_signin.min.js which was auto compiled from _es6/pages/op_auth_signin.js -->
                 <!-- For more examples you can check out https://github.com/jzaefferer/jquery-validation -->
-                <form id="login-form" class="js-validation-signin px-30" action="/login" method="post">
+                <form id="login-form" class="js-validation-signin px-30" action="/loginuser" method="post">
                     <h2 class="h5 font-w400 text-danger mb-0">{{ message }}</h2>
                     <div class="form-group row">
                         <div class="col-12">
                             <div class="form-material form-material-primary floating">
-                                <input type="text" class="form-control" id="loginUsername" name="nrp">
+                                <input type="text" class="form-control" id="loginUsername" name="user_nrp">
                                 <label for="loginUsername">Username</label>
                             </div>
                         </div>
@@ -49,7 +49,7 @@
                     <div class="form-group row">
                         <div class="col-12">
                             <div class="form-material form-material-primary floating">
-                                <input type="password" class="form-control" id="loginPassword" name="password">
+                                <input type="password" class="form-control" id="loginPassword" name="user_password">
                                 <label for="loginPassword">Password</label>
                             </div>
                         </div>
@@ -57,9 +57,9 @@
                     <div class="form-group row">
                         <div class="col-12">
                             <div class="form-material form-material-primary">
-                                <select class="form-control" id="material-select" name="gates">
+                                <select class="form-control" id="material-select" name="gate">
                                     {% for rule in rules %}
-                                    <option value="{{ rule.gate_id }}">{{ rule.gate_name }}</option>
+                                    <option value="{{ rule.gate_id }}">{{ rule.gate_id }}</option>
                                     {% endfor %}
                                 </select>
                                 <label for="material-select">Select Gate</label>

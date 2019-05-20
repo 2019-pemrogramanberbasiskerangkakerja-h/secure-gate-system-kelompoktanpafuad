@@ -1,6 +1,6 @@
 {% extends "layouts/dashboard/app.html" %}
 
-{% block title %}Tambah{% endblock %}
+{% block title %}Detail{% endblock %}
 
 {% block header %}
     {% include "layouts/dashboard/header.html" %}
@@ -14,7 +14,7 @@
 <nav class="breadcrumb bg-white push">
     <a class="breadcrumb-item" href="/">Dashboard</a>
     <a class="breadcrumb-item" href="/indexuser">Users</a>
-    <span class="breadcrumb-item active">Tambah</span>
+    <span class="breadcrumb-item active">Detail</span>
 </nav>
 {% if (code != NULL) %}
     {% if (code == 0) %}
@@ -25,14 +25,14 @@
 {% endif %}
 <div class="block block-themed">
     <div class="block-header bg-gd-lake">
-        <h3 class="block-title">Users</small></h3>
+        <h3 class="block-title">Detail User</small></h3>
     </div>
     <div class="block-content block-content-full">
-        <form class="js-validation-signin" action="/adduser" method="post">
+        <form class="js-validation-signin" action="" method="post">
             <div class="form-group row">
                 <div class="col-md-12">
                     <div class="form-material form-material-primary input-group">
-                        <input type="text" class="form-control" id="material-addon-text" name="user_nrp" placeholder="Masukkan NRP">
+                        <input value="{{ user.user_nrp }}" disabled type="text" class="form-control" id="material-addon-text" name="user_nrp" placeholder="Masukkan ID User">
                         <label for="material-addon-text">NRP</label>
                         <div class="input-group-append">
                             <span class="input-group-text"></span>
@@ -43,29 +43,23 @@
             <div class="form-group row">
                 <div class="col-md-12">
                     <div class="form-material form-material-primary input-group">
-                        <input type="text" class="form-control" id="material-addon-text" name="user_password" placeholder="Masukkan Password">
-                        <label for="material-addon-text">Password</label>
+                        <input value="{{ user.user_password }}" disabled type="text" class="form-control" id="material-addon-text" name="user_password" placeholder="Masukkan Jam Buka">
+                        <label for="material-addon-text">Jam Buka</label>
                         <div class="input-group-append">
                             <span class="input-group-text"></span>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- <div class="form-group row">
+            <div class="form-group row">
                 <div class="col-md-12">
                     <div class="form-material form-material-primary input-group">
-                        <input type="text" class="form-control" id="material-addon-text" name="user_role" placeholder="Masukkan Role">
-                        <label for="material-addon-text">Role</label>
+                        <input value="{{ user.user_role }}" disabled type="text" class="form-control" id="material-addon-text" name="user_role" placeholder="Masukkan Jam Tutup">
+                        <label for="material-addon-text">Jam Tutup</label>
                         <div class="input-group-append">
                             <span class="input-group-text"></span>
                         </div>
                     </div>
-                </div>
-            </div> -->
-            <hr>
-            <div class="form-group row">
-                <div class="col-md-12">
-                    <button type="submit" class="btn btn-alt-primary pull-right">Submit</button>
                 </div>
             </div>
         </form>
