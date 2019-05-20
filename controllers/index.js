@@ -10,13 +10,33 @@ exports.index = function(req, res, next) {
     res.render('dashboard/index', { path: "/"});
 };
 
+exports.indexUser = function(req, res, next) {
+    Request.get("http://10.151.31.98:3000/users", (error, response, body) => {
+        if(error) {
+            return console.log(error);
+        }
+        var data = JSON.parse(body);
+        res.render('dashboard/users/index', { users: data['values']} );
+    });
+};
+
 // page user
 exports.addUser = function(req, res, next) {
     res.render('dashboard/users/index');
 };
 
-exports.editUser = function(req, res, next) {
-    res.render('dashboard/users/edit');
+// get info user
+exports.getUser = function(req, res, next) {
+    var user_id = req.params.user_id;
+    Request.get("http://10.151.31.98:3000/users/"+user_id, (error, response, body) => {
+        if(error) {
+            return console.log(error);
+        }
+        var data = JSON.parse(body);
+        console.log(data['values']);
+        res.render('dashboard/users', { users: data['values']} );
+        // res.render('dashboard/gates/edit', { gates: data['values']} );
+    });
 };
 
 // page gate
