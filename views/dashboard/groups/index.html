@@ -1,0 +1,72 @@
+{% extends "layouts/dashboard/app.html" %}
+
+{% block title %}Group{% endblock %}
+
+{% block header %}
+    {% include "layouts/dashboard/header.html" %}
+{% endblock %}
+
+{% block sidebar %}
+    {% include "layouts/dashboard/sidebar.html" %}
+{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb bg-white push">
+    <a class="breadcrumb-item" href="/">Dashboard</a>
+    <a class="breadcrumb-item" href="/indexgroup">Groups</a>
+    <span class="breadcrumb-item active">index</span>
+</nav>
+{% if (code != NULL) %}
+    {% if (code == 0) %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% else %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endif %}
+{% endif %}
+<div class="block block-themed">
+    <div class="block-header bg-gd-lake">
+        <h3 class="block-title">Groups</small></h3>
+    </div>
+    <div class="block-content block-content-full">
+        <a href="/addgroup" class="btn btn-success mb-10"><i class="fa fa-plus"></i> Tambah Group</a>
+        <div class="table-responsive">
+            <table id="tabel-group" class="stripe table table-stripped">
+                <thead>
+                    <tr>
+                        <th class="text-center">Group Username</th>
+                        <th class="text-center">Group Gate</th>
+                        <!-- <th class="text-center">Lihat</th> -->
+                        <th class="text-center">Hapus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for group in groups %}
+                    <tr>
+                        <td class="text-center">{{ group.user_nrp }}</td>
+                        <td class="text-center">{{ group.gate_id }}</td>
+                        <!-- <td class="text-center">
+                            <a href="/getgroup/{{ group.gate_id }}" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></a>
+                        </td> -->
+                        <td class="text-center">
+                            <a href="/delgroup/{{ group.user_nrp }}/{{ group.gate_id }}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block moreJS %}
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#tabel-group').DataTable({
+                "autoWidth": true,
+                "ordering": false,
+            });
+        });
+    </script>
+{% endblock %}

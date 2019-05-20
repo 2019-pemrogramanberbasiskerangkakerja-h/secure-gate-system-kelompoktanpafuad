@@ -76,6 +76,54 @@ exports.delGate = function(req, res, next) {
     });
 };
 
+exports.indexGroup = function(req, res, next) {
+    Request.get("http://10.151.31.98:3000/usergateall", (error, response, body) => {
+        if(error) {
+            return console.log(error);
+        }
+        var data = JSON.parse(body);
+        res.render('dashboard/groups/index', { groups: data['values'], path: "/indexgroup"} );
+    });
+};
+
+exports.addGroup = function(req, res, next) {
+    Request.get("http://10.151.31.98:3000/gate", (error, response, body) => {
+        if(error) {
+            return console.log(error);
+        }
+        var data = JSON.parse(body);
+        res.render('dashboard/groups/add', { gates: data['values'], path: "/indexgate"} );
+    });
+};
+
+exports.postGroup = function(req, res, next) {
+    var user = req.body.user;
+    var gate = req.body.gate;
+    Request.post("http://10.151.31.98:3000/usergate/", {
+        form:{ user:user, gate:gate }
+    }, (error, data) => {
+        if(error) {
+            return console.dir(error);
+        }
+            console.log(data);
+            res.redirect('/indexgroup');
+    });
+};
+
+exports.delGroup = function(req, res, next) {
+    var user = req.params.user;
+    var gate = req.params.gate;
+    Request.post("http://10.151.31.98:3000/usergatedel/", {
+        form:{ user:user, gate:gate }
+    }, (error, data) => {
+        if(error) {
+            return console.dir(error);
+        }
+            console.log(data);
+            res.redirect('/indexgroup');
+    });
+};
+
 // page login
 exports.loginPage = function(req, res, next) {
     db.query('SELECT * FROM gates', function(error, result, fields) {
