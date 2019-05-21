@@ -2,7 +2,7 @@ var response = require('./response');
 var db = require('../config/databases');
 
 exports.index = function(req, res) {
-    response.ok("This is API for Gates", res)
+    response.ok("This is API for Rules", res)
 };
 
 exports.getAllRule = function(req, res) {
@@ -27,7 +27,7 @@ exports.postRule = function(req, res) {
         if(error){
             console.log(error)
         } else{
-            response.ok("Create Gate Success!", res)
+            response.ok("Create Rule Success!", res)
         }
     });
 };
@@ -58,7 +58,7 @@ exports.updateRule = function(req, res) {
         if(error){
             console.log(error)
         } else{
-            response.ok("Edit Gate Success!", res)
+            response.ok("Edit Rule Success!", res)
         }
     });
 };
@@ -70,7 +70,7 @@ exports.deleteRule = function(req, res) {
         if(error){
             console.log(error)
         } else{
-            response.ok("Delete Gate Success!", res)
+            response.ok("Delete Rule Success!", res)
         }
     });
 };
