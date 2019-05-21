@@ -21,7 +21,7 @@ exports.postRule = function(req, res) {
     var finish = req.body.finish;
     var gate_id = req.body.gate_id;
     var user_id = req.body.user_id;
-    db.query('INSERT INTO rules (start, finish, gate_id, user_id) VALUES (?, ?, ?, ?, ?)',
+    db.query('INSERT INTO rules (rule_name, start, finish, gate_id, user_id) VALUES (?, ?, ?, ?, ?)',
     [ rule_name, start, finish, gate_id, user_id ], 
     function (error, rows, fields){
         if(error){
